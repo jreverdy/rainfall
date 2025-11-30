@@ -1,0 +1,23 @@
+objdump -x 
+
+Affiche les symboles qui existent dans obj, pour s'assurer de l'architecture du programme
+
+objdump -d
+
+Desassemble le fichier pour avoir le code assembleur
+
+dans gdb ->
+
+disas nom_de_la_fonction / adresse en hexa de la fonction
+
+Desassemble la fonction pour afficher pour le code assembleur
+
+info register nom_du_registre
+
+afficher la valeur du registre en question
+
+p -> print la valeur 
+
+x/un_nombre+unparam(specifier printf) une_adresse -> afficher la memoire
+
+ltrace -> affiche les appels de fonction de la libc, permet de recuperer facilement des buffers

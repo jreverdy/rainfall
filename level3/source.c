@@ -1,21 +1,26 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
-void main(void)
+int m;
 
-{
-  v();
-  return;
+int v() {
+    int result;
+    char s[512];
+
+    fgets(s, 512, stdin);
+
+    printf(s);
+    result = m;
+
+    if (m == 64) {
+        fwrite("Wait what?!\n", 1, 12, stdout);
+        return system("/bin/sh");
+    }
+
+    return result;
 }
 
-void v(void)
-
-{
-  char local_20c [520];
-  
-  fgets(local_20c,0x200,stdin);
-  printf(local_20c);
-  if (m == 0x40) {
-    fwrite("Wait what?!\n",1,0xc,stdout);
-    system("/bin/sh");
-  }
-  return;
+int main() {
+    v();
 }

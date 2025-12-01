@@ -1,17 +1,17 @@
-Dans le programme se trouve une fonction o() qui execute un shell mais qui n'est jamais appelé.
+## Le programme
 
-J'ai essayé de passer par un simple bufferoverlow mais ce n'est pas possible car fgets lit au maximum 512 octets et le buffer en fait déjà 520. Donc pas de shellcode ici.
+Dans le programme se trouve une fonction o() qui execute un shell mais qui n'est jamais appelé. Le main lui fait un `fgets` qui n'est pas exploitable car limité par une taille prédéfinié.
+
+
+## La faille
+
+On a essayé de passer par un simple bufferoverlow mais ce n'est pas possible à cause de `fgets`.
 
 La prochaine idée serait de remplacer l'adresse de la fonction  exit() par l'adresse de o().
 
 Printf peut ici nous aider à lire sur la stack avec %p parce qu'un buffer dont a la main est passé comme argument.
 
-(gdb) break main
-Breakpoint 1 at 0x8048507
-(gdb) run
-Starting program: /home/user/level5/level5 
-
-Breakpoint 1, 0x08048507 in main ()
+```
 (gdb) info functions o
 All functions matching regular expression "o":
 
@@ -20,6 +20,7 @@ Non-debugging symbols:
 0x080483c0  __gmon_start__@plt
 0x08048420  __do_global_dtors_aux
 0x080484a4  o
+```
 
 adresse de o: 0x080484a4
 adresse du exit(): 0x08049838

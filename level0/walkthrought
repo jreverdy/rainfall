@@ -1,4 +1,0 @@
-Le programme utilise la fonction atoi sur le premier argument passé au programme.
-Il vérifie ensuite si la valeur de cet argument est égal à '0x1a7' en binaire ce qui équivaut à 423.
-Un shell est ensuite executé et nous permet d'accéder au home du lvl01. 
-TODO ownership level1

